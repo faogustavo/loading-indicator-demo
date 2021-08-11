@@ -2,7 +2,10 @@ package dev.valvassori.compose.loading.indicators
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -18,6 +21,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.valvassori.compose.loading.shapes.Ball
 import kotlinx.coroutines.delay
+
+@Composable
+fun BallPulseSyncIndicatorTransactionDelayAnimation() {
+    val infiniteTransition = rememberInfiniteTransition()
+    val animationValues = (1..3).map { index ->
+        infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 12f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    durationMillis = 300,
+                    delayMillis = 70 * index,
+                ),
+                repeatMode = RepeatMode.Reverse,
+            )
+        )
+    }
+
+    Row(
+        modifier = Modifier.height(24.dp),
+    ) {
+        animationValues.forEach { animatedValue ->
+            Ball(
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .offset(y = animatedValue.value.dp),
+            )
+        }
+    }
+}
 
 @Composable
 fun BallPulseSyncIndicatorDelayAnimation() {

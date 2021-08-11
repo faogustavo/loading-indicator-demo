@@ -1,9 +1,15 @@
 package dev.valvassori.compose.loading.indicators
 
 import android.util.Log
+import androidx.compose.animation.VectorConverter
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.valvassori.compose.loading.shapes.Ball
 
@@ -67,7 +74,7 @@ fun BallScaleIndicatorSideEffect() {
 }
 
 @Composable
-fun BallScaleIndicator() {
+fun BallScaleIndicatorLaunched() {
     var animationProgress by remember { mutableStateOf(0f) }
 
     LaunchedEffect(key1 = Unit) {
@@ -80,6 +87,25 @@ fun BallScaleIndicator() {
             )
         ) { value, _ -> animationProgress = value }
     }
+
+    Ball(
+        modifier = Modifier
+            .scale(animationProgress)
+            .alpha(1 - animationProgress),
+        size = 48.dp,
+    )
+}
+
+@Composable
+fun BallScaleIndicator() {
+    val infiniteTransition = rememberInfiniteTransition()
+    val animationProgress by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 800)
+        )
+    )
 
     Ball(
         modifier = Modifier

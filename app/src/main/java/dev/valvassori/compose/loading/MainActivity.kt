@@ -17,15 +17,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.valvassori.compose.loading.indicators.BallPulseSyncIndicator
 import dev.valvassori.compose.loading.indicators.BallPulseSyncIndicatorDelayAnimation
+import dev.valvassori.compose.loading.indicators.BallPulseSyncIndicatorTransactionDelayAnimation
 import dev.valvassori.compose.loading.indicators.BallScaleIndicator
+import dev.valvassori.compose.loading.indicators.BallScaleIndicatorLaunched
 import dev.valvassori.compose.loading.indicators.BallScaleIndicatorSideEffect
 import dev.valvassori.compose.loading.indicators.InitialBallScaleIndicator
 import dev.valvassori.compose.loading.indicators.TriangleSkewSpinIndicator
@@ -73,7 +73,15 @@ fun BallScaleSamples() {
         NamedCompose(name = "SideEffect") {
             BallScaleIndicatorSideEffect()
         }
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+    ) {
         NamedCompose(name = "LaunchedEffect") {
+            BallScaleIndicatorLaunched()
+        }
+        NamedCompose(name = "InfiniteTransition") {
             BallScaleIndicator()
         }
     }
@@ -91,7 +99,10 @@ fun BallPulseSamples() {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-        NamedCompose(name = "Animation Delay") {
+        NamedCompose(name = "Transition + Anim Delay") {
+            BallPulseSyncIndicatorTransactionDelayAnimation()
+        }
+        NamedCompose(name = "Coroutines + Anim Delay") {
             BallPulseSyncIndicatorDelayAnimation()
         }
         NamedCompose(name = "Coroutines Delay") {
